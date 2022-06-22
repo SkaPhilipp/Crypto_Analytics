@@ -5,6 +5,6 @@ This project uses Python and Neo4j to get data from APIs from different websites
 
 https://github.com/SkaPhilipp/Crypto_Analytics/blob/main/images/graph.JPG
 
-![alt text](./images/graph.jpg?raw=true)
+![Alt text](./images/graph.JPG)
 
 Using Neo4j and its Python Driver the Python script runs the in Neo4j implemented PageRank Algorithm to give cryptocurrencies respective scores.
