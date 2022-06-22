@@ -14,17 +14,9 @@ from binance import Client
 
 
 
-#####################################################################################################
-#                                                                                                   #
-#                      !!!!!!! DELETE ALL API KEYS / Neo4j PWs etd BEFORE UPLOAD !!!!!!!!           #
-#                                                                                                   #
-#####################################################################################################
-
-
-
 
 # maximum rank
-max_rank = 30
+max_rank = 100
 
 
 #####################################################################################################
@@ -35,9 +27,9 @@ max_rank = 30
 
 
 
-cmk_api_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
+cmk_api_url = '<cmk-api-url>'
 
-cmk_api_key = 'a7aa99a0-fa88-4484-9ace-7d83114c5cb2'
+cmk_api_key = '<cmk-api-key>'
 
 
 parameters = {
@@ -149,8 +141,8 @@ for base in rankings.values():
 #print(symbols_of_interest)
 
 
-bn_api_key = 'yWBKYiLhAoxwWz9QrmEgXEQfWpLYGgpEQC78RCjUpkOrZqkd8V6hJdUyhByG9SVA'
-bn_secret = 'ue4MFPCkLa7OlugLgubsyi5wvWLc0iuLAa0SGqiPSl0PiyrfzzPskVp4gKXdmk33'
+bn_api_key = '<bn-api-key>'
+bn_secret = '<bn-api-secret>'
 
 
 # api key/secret are required for user data endpoints
@@ -254,9 +246,9 @@ class graph_database:
 def main():
 
     #local bolt and http port, etc:
-    local_bolt = "bolt://localhost:7687" #alternative same as original: original stopped working
-    local_http = "http://localhost:7474"
-    local_pw = "Neo4j$coin"
+    local_bolt = '<neo4j-local-bolt>'
+    local_http = '<neo4j-local-http>'
+    local_pw = '<neo4j-pw>'
     local_user = "neo4j"
 
     coin_db = graph_database(local_bolt, local_user, local_pw)
