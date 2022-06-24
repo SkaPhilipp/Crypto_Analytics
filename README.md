@@ -3,11 +3,15 @@ Analysis of top cryptocurrencies using graph alogorithms
 
 This project uses Python and Neo4j to get data from APIs from different websites on cryptocurrency markets and stores this information in a graph database using Neo4j.
 
-Information on top 100 currencies drawn from API of a popular cryptocurrency market website:
+## Input:
+
+Information and rankings of top 100 currencies drawn from API of a popular cryptocurrency market website:
 
 ![Alt text](./images/rankings.JPG)
 
-Currencies stored as vertices with information on trading pairs stored as relationships with respective properties:
+## Methodology:
+
+Currencies stored as nodes with information on trading pairs stored as relationships with respective properties:
 
 ![Alt text](./images/graph.JPG)
 
@@ -18,3 +22,7 @@ Using Neo4j and its Python Driver the Python script runs the in Neo4j implemente
 
 
 ![Alt text](./images/scores.JPG)
+
+## Output:
+
+PageRank score of top cryptocurrencies indicating market trends.
