@@ -25,4 +25,4 @@ Using Neo4j and its Python Driver the Python script runs the in Neo4j implemente
 
 ## Output:
 
-PageRank score of top cryptocurrencies indicating market trends.
+PageRank score of top cryptocurrencies plotted as bar graph indicating market trends.
