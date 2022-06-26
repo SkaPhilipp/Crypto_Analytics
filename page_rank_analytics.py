@@ -6,7 +6,7 @@ import json
 import xlsxwriter
 import xlrd
 
-import pandas as pd
+import matplotlib.pyplot as plt
 
 from neo4j import GraphDatabase
 
@@ -14,8 +14,16 @@ from binance import Client
 
 
 
+#####################################################################################################
+#                                                                                                   #
+#                      !!!!!!! DELETE ALL API KEYS / Neo4j PWs etd BEFORE UPLOAD !!!!!!!!           #
+#                                                                                                   #
+#####################################################################################################
 
-# maximum rank
+
+
+
+# maximum ranking
 max_rank = 100
 
 
@@ -26,12 +34,11 @@ max_rank = 100
 #####################################################################################################
 
 
-
+# set cmk api url and key
 cmk_api_url = '<cmk-api-url>'
-
 cmk_api_key = '<cmk-api-key>'
 
-
+# set parameters for api request
 parameters = {
   'start':'1',
   'limit':'5000',
@@ -46,13 +53,14 @@ headers = {
 session = requests.Session()
 session.headers.update(headers)
 
+# perform api request
 try:
   response = session.get(cmk_api_url, params=parameters)
   data = json.loads(response.text)
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
 
-
+# store information on currencies and ranking in dictionary
 rankings = {}
 if response.status_code == 200:
     data = response.json()
@@ -70,12 +78,10 @@ if response.status_code == 200:
 
 # Output rankings and write to excel file
 
-# Workbook() takes one, non-optional, argument
-# which is the filename that we want to create.
+# Create new workbook
 workbook = xlsxwriter.Workbook('ranking.xlsx')
  
-# The workbook object is then used to add new
-# worksheet via the add_worksheet() method.
+# Add worksheet to workbook
 worksheet = workbook.add_worksheet("new")
 
 # Header for worksheet
@@ -83,14 +89,14 @@ worksheet.write('A1', 'Rank')
 worksheet.write('B1', 'Currency')
 
 for rank in rankings:
+  # Print top rankings
   print(str(rank) + "  --  " + rankings[rank])
   
   # write rankings to Excel file
   worksheet.write('A' + str(rank + 1), rank)
   worksheet.write('B' + str(rank + 1), rankings[rank])
 
-# Finally, close the Excel file
-# via the close() method.
+# close excel file
 workbook.close()
 
 '''
@@ -103,10 +109,9 @@ workbook.close()
 
 
 
-############################################# Use pandas to read xlsx file format #################################
+# Reading Excel File only necessary if running multiple times within short period and don't want to use up all api credits
 
 # Read rankings from excel file
-
 input_file = ("ranking.xls")
 
 workbook = xlrd.open_workbook(input_file)
@@ -131,16 +136,13 @@ for rank in range(1, max_rank + 1):
 
 
 # Get market trade pairings
-
 symbols_of_interest = []
 for base in rankings.values():
   for quote in rankings.values():
     if base !=quote:
       symbols_of_interest.append(base + quote)
 
-#print(symbols_of_interest)
-
-
+# Set api key and api secret
 bn_api_key = '<bn-api-key>'
 bn_secret = '<bn-api-secret>'
 
@@ -148,39 +150,8 @@ bn_secret = '<bn-api-secret>'
 # api key/secret are required for user data endpoints
 client = Client(bn_api_key, bn_secret)
 
-
-# Get exchange info
-symbols = client.get_exchange_info()
-
-
-
-# Get exchange information
-'''
-count = 1
-for s in exchange_info['symbols']:
-  print(str(count) + " -- " + s['symbol'])
-  count += 1
-'''
-
-
-#symbols = pd.DataFrame(symbols["symbols"])["symbol"]
-
-#ticker_df = pd.DataFrame(client.get_all_tickers())
-
-#print(ticker_df)
-
-#print(ticker_df[ticker_df['symbol'].isin(["ETHBTC","LTCBTC"])])
-
+# Get data on trading pairs
 tickers = client.get_all_tickers()
-
-#print(tickers)
-'''
-for ticker in tickers:
-  if ticker['symbol'] == 'ETHBTC':
-    print(ticker['price'])
-'''
-#print(ticker_df['symbol'])
-
 
 
 
@@ -192,48 +163,52 @@ for ticker in tickers:
 #####################################################################################################
 
 
-
+# Define graph database class
 class graph_database:
 
-
+    # Initialise graph databse using Neo4j api
     def __init__(self, uri, user, password):
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
+    # Reset graph database by deleting all nodes and relationships
     def reset(self):
         with self.driver.session() as session:
             session.run("MATCH (m) DETACH DELETE m")
 
+    # Close graph database
     def close(self):
         self.driver.close()
 
-    def create_vertex(self, symbol):
+    # Create new vertex for each currency
+    def create_node(self, symbol):
         cypher_query = "CREATE (c:Coin {symbol: '" + symbol + "'})"
         with self.driver.session() as session:
             session.run(cypher_query)
 
+    # Create edge for each trading pair with data on trades
     def create_relationship(self, out_vertex, in_vertex, value):
         cypher_query = "MATCH (c1:Coin), (c2:Coin) WHERE c1.symbol = '"+ out_vertex + "' AND c2.symbol = '"+ in_vertex + "' CREATE (c1)-[:TRADE {value:"+ str(value) + "}]->(c2)"
         with self.driver.session() as session:
             session.run(cypher_query)
 
+    # Execute Cypher query
     def execute_query(self, query):
         with self.driver.session() as session:
             session.run(query)
 
+    # Execute Cypher query and return result
     def execute_query_with_output_result(self, query):
         with self.driver.session() as session:
-            record = session.run(query)
-            for i in record:
-              line = dict(i)
-              print(dict(i))
-              #print(dict(i)['symbol'] + "  --  " + str(dict(i)['score']))
-            return record
-    
+          result = session.run(query)
+          return [dict(i) for i in result]
+
+    # Execute PageRank algorithm
     def execute_page_rank(self, graph_name):
         projection = "CALL gds.graph.project('"+ graph_name +"','Coin','TRADE',{relationshipProperties: 'value'})"
         self.execute_query(projection)
         page_rank = "CALL gds.pageRank.stream('"+ graph_name +"') YIELD nodeId, score RETURN gds.util.asNode(nodeId).symbol AS symbol, score ORDER BY score DESC, symbol ASC"
-        self.execute_query_with_output_result(page_rank)
+        result = self.execute_query_with_output_result(page_rank)
+        return result
 
 
 #####################################################################################################
@@ -245,7 +220,7 @@ class graph_database:
 
 def main():
 
-    #local bolt and http port, etc:
+    # Local bolt and http port, etc:
     local_bolt = '<neo4j-local-bolt>'
     local_http = '<neo4j-local-http>'
     local_pw = '<neo4j-pw>'
@@ -253,12 +228,12 @@ def main():
 
     coin_db = graph_database(local_bolt, local_user, local_pw)
 
-    # reseting graph db
+    # reseting graph database
     coin_db.reset()
 
     # creating currecncy vertices
     for currency in rankings.values():
-      coin_db.create_vertex(currency)
+      coin_db.create_node(currency)
   
     # creating currecncy relationships
     for base in rankings.values():
@@ -270,11 +245,25 @@ def main():
     # return result from PageRank Algorithm
 
     graph_name = 'new'
-    result = coin_db.execute_page_rank(graph_name)
+    page_ranks = coin_db.execute_page_rank(graph_name)
+
+    # store rankings and symbols in lists
+    symbols = []
+    scores = []
+
+    for result in page_ranks:
+      symbols.append(result['symbol'])
+      scores.append(round(result['score'],5))
+
     
-    # find out why execute_page_rnak does not return result correctly, yet if printed in execute_query it works
-    #for record in result:
-    #  print(record)
+    # creating a bar chart with top 10 scores for respective currencies
+    x_values = list(symbols[:10])
+    y_values = list(scores[:10])
+    
+    plt.bar(x_values, y_values, color ='red', width = 0.6)
+    plt.xlabel("Top currencies (with respect to PageRank)")
+    plt.ylabel("PageRank scores")
+    plt.show()
 
     # closing graph db
     coin_db.close()
