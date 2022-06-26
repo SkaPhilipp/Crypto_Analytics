@@ -21,7 +21,7 @@ Currencies stored as nodes with information on trading pairs stored as relations
 Using Neo4j and its Python Driver the Python script runs the in Neo4j implemented PageRank Algorithm to give cryptocurrencies respective scores.
 
 
-![Alt text](./images/scores.JPG)
+![Alt text](./images/page_rank_scores.JPG)
 
 ## Output:
 
