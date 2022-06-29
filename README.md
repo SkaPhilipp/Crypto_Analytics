@@ -11,14 +11,14 @@ Information and rankings of top 100 currencies drawn from API of a popular crypt
 
 ## Methodology:
 
-Currencies stored as nodes with information on trading pairs stored as relationships with respective properties:
+Currencies are stored as nodes in the graph database with information on trading pairs stored as relationships with respective properties:
 
 ![Alt text](./images/graph.JPG)
 
 ![Alt text](./images/close_up.JPG)
 
 
-Using Neo4j and its Python Driver the Python script runs the in Neo4j implemented PageRank Algorithm to give cryptocurrencies respective scores.
+Using Neo4j and its Python Driver the Python script runs the in Neo4j implemented PageRank Algorithm to give cryptocurrencies respective scores. These reflect the popularity of certain currencies with repect to data on trades between the given currencty and others.
 
 
 ![Alt text](./images/page_rank_scores.JPG)
