@@ -5,7 +5,7 @@ This project uses Python and Neo4j to get data from APIs from different websites
 
 ## Input:
 
-Information and rankings of top 100 currencies drawn from API of a popular cryptocurrency market website:
+Information on rankings of top 100 currencies drawn from API of a popular cryptocurrency market website:
 
 ![Alt text](./images/rankings.JPG)
 
