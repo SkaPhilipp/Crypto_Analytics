@@ -21,8 +21,8 @@ Currencies are stored as nodes in the graph database with information on trading
 Using Neo4j and its Python Driver the Python script runs the in Neo4j implemented PageRank Algorithm to give cryptocurrencies respective scores. These reflect the popularity of certain currencies with repect to data on trades between the given currencty and others.
 
 
-![Alt text](./images/page_rank_scores.JPG)
-
 ## Output:
 
 PageRank score of top cryptocurrencies plotted as bar graph indicating market trends.
+
+![Alt text](./images/page_rank_scores.JPG)
