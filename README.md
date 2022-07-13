@@ -11,7 +11,7 @@ Information on rankings of top 100 currencies drawn from API of a popular crypto
 
 ## Methodology:
 
-Currencies are stored as nodes in the graph database with information on trading pairs stored as relationships with respective properties outlining trade information.
+Information on currencies is stored as nodes in the graph database with information on trading pairs stored as relationships with respective properties outlining trade information.
 
 ![Alt text](./images/graph.JPG)
 
