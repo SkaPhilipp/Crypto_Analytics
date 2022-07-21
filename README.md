@@ -1,7 +1,7 @@
 # Crypto_Analytics
 Analysis of top cryptocurrencies using graph alogorithms
 
-This project makes use of Python and Neo4j to get data from APIs from different websites on cryptocurrency markets and this information is stored in a graph database using Neo4j. The connection between cyrpotcurrency pairings given in form of the trades associated with the respective pairing gives rise to the graph structure. The data will be stored as a property graph using the popular graph database management system Neo4j.
+This project makes use of Python and Neo4j to get data from APIs from different websites on cryptocurrency markets and then this information is stored in a graph database using Neo4j. The connection between cyrpotcurrency pairings given in form of the trades associated with the respective pairing gives rise to the graph structure. The data will be stored as a property graph using the popular graph database management system Neo4j.
 
 ## Input:
 
