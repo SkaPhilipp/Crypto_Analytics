@@ -5,7 +5,7 @@ This project is making use of Neo4j in conjunction with Python to get data from 
 
 ## Input:
 
-Information on rankings of top 100 currencies drawn from API of a popular cryptocurrency market website:
+Information on rankings of top 100 currencies drawn from API of a popular cryptocurrency market website: 
 
 ![Alt text](./images/rankings.JPG)
 
