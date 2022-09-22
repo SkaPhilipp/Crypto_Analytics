@@ -3,7 +3,7 @@ Analysis of the top 100 cryptocurrencies using graph alogorithms
 
 This project makes use of Neo4j in conjunction with Python to get data from different cryptocurrency market website APIs and this information is then stored in a graph database using Neo4j. The connection between cyrpotcurrency pairings given in form of the trades associated with the respective pairing gives rise to the graph structure. The data will be stored as a property graph using the popular graph database management system Neo4j.
 
-## Input:
+## Input: 
 
 Information on rankings of top 100 currencies drawn from API of a popular cryptocurrency market website: 
 
