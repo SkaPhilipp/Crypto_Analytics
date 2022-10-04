@@ -28,7 +28,7 @@ max_rank = 100
 cmk_api_url = '<cmk-api-url>'
 cmk_api_key = '<cmk-api-key>'
 
-# set parameters for api requests
+# set parameters for api requests 
 parameters = {
   'start':'1',
   'limit':'5000',
