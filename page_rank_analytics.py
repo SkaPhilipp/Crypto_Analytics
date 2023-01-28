@@ -24,7 +24,7 @@ max_rank = 100
 ###################################################################################################
 
 
-# set cmk api url and key 
+# set cmk api url and key
 cmk_api_url = '<cmk-api-url>'
 cmk_api_key = '<cmk-api-key>'
 
