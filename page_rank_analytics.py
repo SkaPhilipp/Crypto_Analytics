@@ -13,7 +13,7 @@ from neo4j import GraphDatabase
 from binance import Client
 
 
-# maximum ranking of top <max_rank> performing currencies 
+# maximum ranking of top <max_rank> performing currencies
 max_rank = 100
 
 
