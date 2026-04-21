@@ -1,4 +1,4 @@
-# Crypto_Analytics
+# Crypto_Analytics 
 
 Analysis of the top 100 cryptocurrencies using graph alogorithms
 
